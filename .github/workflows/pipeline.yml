@@ -35,13 +35,16 @@ jobs:
 
       - name: Create ZAP Config File
         run: |
-          echo "WARN-NEW	10055	IGNORE" > zap-config.conf
-          echo "WARN-NEW	10063	IGNORE" >> zap-config.conf
+          echo "WARN-NEW	10055	WARN" > zap-config.conf
+          echo "WARN-NEW	10063	WARN" >> zap-config.conf
 
       - name: Start Application for Security Scanning
         run: |
           docker build -t lacrei-saude-app .
           docker run -d --name lacrei-saude-app -p 8080:3000 lacrei-saude-app
+
+      - name: Wait for Application to Start
+        run: sleep 30
 
       - name: Run Zed Attack Proxy
         run: |
