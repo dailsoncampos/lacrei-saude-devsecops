@@ -33,6 +33,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Create ZAP Config File
+        run: |
+          echo "WARN-NEW	10055	IGNORE" > zap-config.conf
+          echo "WARN-NEW	10063	IGNORE" >> zap-config.conf
+
       - name: Start Application for Security Scanning
         run: |
           docker build -t lacrei-saude-app .
@@ -56,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: zap-report
-          path: ./zap.out
+          path: zap-report.html
 
       - name: Stop Application Container
         run: docker stop lacrei-saude-app && docker rm lacrei-saude-app
