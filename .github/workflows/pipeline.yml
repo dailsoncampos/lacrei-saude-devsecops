@@ -36,10 +36,12 @@ jobs:
       - name: Start Application for Security Scanning
         run: |
           docker build -t lacrei-saude-app .
-          docker run -d -p 8080:3000 lacrei-saude-app
+          docker run -d --name lacrei-saude-app -p 8080:3000 lacrei-saude-app
 
       - name: Run Zed Attack Proxy
-        run: docker run -t zaproxy/zap-stable zap-full-scan.py -t http://localhost:8080
+        run: |
+          docker pull zaproxy/zap-stable
+          docker run --network="host" zaproxy/zap-stable zap-full-scan.py -t http://localhost:8080
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,6 +50,9 @@ jobs:
         with:
           name: zap-report
           path: ./zap.out
+
+      - name: Stop Application Container
+        run: docker stop lacrei-saude-app && docker rm lacrei-saude-app
 
   deploy:
     runs-on: ubuntu-latest
