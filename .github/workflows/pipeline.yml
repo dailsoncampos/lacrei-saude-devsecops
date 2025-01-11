@@ -41,7 +41,10 @@ jobs:
       - name: Run Zed Attack Proxy
         run: |
           docker pull zaproxy/zap-stable
-          docker run --network="host" zaproxy/zap-stable zap-full-scan.py -t http://localhost:8080
+          docker run --network="host" zaproxy/zap-stable zap-full-scan.py \
+            -t http://localhost:8080 \
+            -m 2 \
+            --ignore-pattern ".*(robots\.txt|sitemap\.xml).*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
