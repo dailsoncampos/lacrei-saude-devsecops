@@ -38,8 +38,10 @@ jobs:
           docker build -t lacrei-saude-app .
           docker run -d -p 8080:3000 lacrei-saude-app
 
-      - name: Run Zed Attack Proxy
-        run: docker run -t zaproxy/zap-stable zap-full-scan.py -t http://localhost:8080
+      - name: OWASP ZAP Security Scan
+        uses: zaproxy/action-full-scan@v0.4.0
+        with:
+          target: http://localhost:8080
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
