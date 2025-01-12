@@ -35,8 +35,8 @@ jobs:
 
       - name: Create ZAP Config File
         run: |
-          echo "WARN-NEW	10055	WARN" > zap-config.conf
-          echo "WARN-NEW	10063	WARN" >> zap-config.conf
+          echo "WARN-NEW 10055 WARN" > zap-config.conf
+          echo "WARN-NEW 10063 WARN" >> zap-config.conf
 
       - name: Start Application for Security Scanning
         run: |
